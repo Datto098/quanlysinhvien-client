@@ -114,7 +114,7 @@ function displayPosts(posts) {
 			thumbnailContainer.classList.add('post-thumbnail');
 			if (post.thumbnail) {
 				const thumbnailImage = document.createElement('img');
-				thumbnailImage.src = `${API_BASE_URL}${post.thumbnail}`; // Đảm bảo URL đúng
+				thumbnailImage.src = `${post.thumbnail}`; // Đảm bảo URL đúng
 				thumbnailImage.alt = 'Thumbnail';
 				thumbnailImage.classList.add('thumbnail-img'); // Thêm lớp CSS cho ảnh
 				thumbnailContainer.appendChild(thumbnailImage);
