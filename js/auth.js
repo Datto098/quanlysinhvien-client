@@ -1,5 +1,6 @@
 const API_URL = 'https://quanlysinhvien-express-js.vercel.app/api';
 const API_BASE_URL = 'https://quanlysinhvien-express-js.vercel.app'; // Địa chỉ API cơ bản
+const CLIENT_URL = 'https://datto098.github.io/quanlysinhvien-client'
 
 // Kiểm tra đăng nhập
 function checkAuth() {
@@ -20,7 +21,7 @@ function checkAuth() {
 	}
 
 	if (!token || !user) {
-		window.location.href = '../login.html';
+		window.location.href = CLIENT_URL + "/login.html";
 		return false;
 	}
 
