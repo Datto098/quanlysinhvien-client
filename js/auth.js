@@ -20,7 +20,7 @@ function checkAuth() {
 	}
 
 	if (!token || !user) {
-		window.location.href = './login.html';
+		window.location.href = '../login.html';
 		return false;
 	}
 
