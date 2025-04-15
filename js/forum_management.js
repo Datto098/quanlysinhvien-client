@@ -44,7 +44,7 @@ async function getPendingPosts() {
 			// Hiển thị ảnh thumbnail (nếu có)
 			if (post.thumbnail) {
 				const thumbnail = document.createElement('img');
-				thumbnail.src = `${API_BASE_URL}${post.thumbnail}`; // Đảm bảo URL đúng
+				thumbnail.src = `${post.thumbnail}`; // Đảm bảo URL đúng
 				thumbnail.alt = 'Thumbnail';
 				thumbnail.classList.add('thumbnail-img'); // Thêm lớp CSS cho ảnh
 				li.appendChild(thumbnail);
