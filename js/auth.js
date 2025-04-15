@@ -1,5 +1,5 @@
-const API_URL = 'http://localhost:5000/api';
-const API_BASE_URL = 'http://localhost:5000'; // Địa chỉ API cơ bản
+const API_URL = 'https://quanlysinhvien-express-js.vercel.app/api';
+const API_BASE_URL = 'https://quanlysinhvien-express-js.vercel.app'; // Địa chỉ API cơ bản
 
 // Kiểm tra đăng nhập
 function checkAuth() {
