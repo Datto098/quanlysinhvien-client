@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Diễn đàn - Hệ thống Quản lý Sinh viên</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+		/>
+		<!-- Quill CSS -->
+		<link
+			href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+			rel="stylesheet"
+		/>
+
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<nav class="navbar">
+			<div class="nav-brand"></div>
+			<ul class="nav-links">
+				<li><a href="index.html">Trang chủ</a></li>
+				<li><a href="forum.html" class="active">Diễn đàn</a></li>
+				<li id="adminLink" style="display: none">
+					<a href="management.html">Quản lý sinh viên</a>
+				</li>
+				<li id="adminLink" style="display: none">
+					<a href="forum_management.html">Quản lý bài đằng</a>
+				</li>
+				<li id="profileLink" style="display: none">
+					<a href="student.html">
+						<i class="fas fa-user-circle"></i> Thông tin cá nhân
+					</a>
+				</li>
+				<li id="loginLink">
+					<a href="login.html">Đăng nhập</a>
+				</li>
+				<li id="registerLink">
+					<a href="register.html">Đăng ký</a>
+				</li>
+				<li id="logoutLink" style="display: none">
+					<a href="#" onclick="logout()">Đăng xuất</a>
+				</li>
+			</ul>
+			<button class="nav-toggle">
+				<i class="fas fa-bars"></i>
+			</button>
+		</nav>
+
+		<main>
+			<div class="container">
+				<div class="forum-header">
+					<h2 class="section-title">Diễn đàn sinh viên</h2>
+					<button class="btn btn-primary" onclick="showNewPostForm()">
+						<i class="fas fa-plus"></i>
+						Tạo bài viết mới
+					</button>
+				</div>
+
+				<div class="forum-filters">
+					<div class="search-box">
+						<i class="fas fa-search"></i>
+						<input
+							type="text"
+							id="searchPosts"
+							placeholder="Tìm kiếm bài viết..."
+							oninput="filterPosts()"
+						/>
+					</div>
+					<div class="sort-box">
+						<select id="sortPosts" onchange="sortPosts()">
+							<option value="" selected>Sắp xếp theo</option>
+							<option value="newest">Mới nhất</option>
+							<option value="oldest">Cũ nhất</option>
+							<option value="mostComments">
+								Nhiều bình luận nhất
+							</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="forum-posts">
+					<div id="posts" class="posts-container">
+						<!-- Posts render here -->
+					</div>
+				</div>
+			</div>
+		</main>
+
+		<!-- Template cho bài viết -->
+		<template id="postTemplate">
+			<article class="post">
+				<div class="post-header">
+					<div class="post-author">
+						<i class="fas fa-user-circle"></i>
+						<div class="author-info">
+							<span class="author-name"></span>
+							<span class="author-id"></span>
+						</div>
+					</div>
+					<div class="post-meta">
+						<span class="post-time"></span>
+						<span class="post-type"></span>
+					</div>
+				</div>
+				<div class="post-content">
+					<h3 class="post-title"></h3>
+					<p class="post-text"></p>
+				</div>
+				<div class="post-actions">
+					<button class="btn-like">
+						<i class="fas fa-heart"></i>
+						<span class="like-count">0</span>
+					</button>
+					<button class="btn-comment">
+						<i class="fas fa-comment"></i>
+						<span class="comment-count">0</span>
+					</button>
+					<button class="btn-delete" style="display: none">
+						<i class="fas fa-trash"></i>
+					</button>
+				</div>
+				<div class="comments-section" style="display: none">
+					<form class="comment-form" onsubmit="return false;">
+						<div class="input-group">
+							<input
+								type="text"
+								class="form-control"
+								placeholder="Viết bình luận..."
+							/>
+							<button type="submit" class="btn btn-primary">
+								<i class="fas fa-paper-plane"></i>
+							</button>
+						</div>
+					</form>
+					<div class="comments-list"></div>
+				</div>
+			</article>
+		</template>
+
+		<!-- Modal tạo bài viết mới -->
+		<div id="createPostModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title">Tạo bài viết mới</h2>
+					<button
+						class="close-button"
+						onclick="closeModal('createPostModal')"
+					>
+						&times;
+					</button>
+				</div>
+				<form id="createPostForm" onsubmit="createPost(event)">
+					<div class="form-group">
+						<label for="postTitle">Tiêu đề</label>
+						<input
+							type="text"
+							id="postTitle"
+							class="form-control"
+							required
+						/>
+					</div>
+					<div class="form-group">
+						<label for="postContent">Nội dung</label>
+						<textarea
+							id="postContent"
+							class="form-control"
+							rows="5"
+							required
+						></textarea>
+					</div>
+					<div class="form-group">
+						<label for="postCategory">Chủ đề</label>
+						<select id="postCategory" class="form-control" required>
+							<option value="">Chọn chủ đề</option>
+							<option value="academic">Học tập</option>
+							<option value="questions">Hỏi đáp</option>
+							<option value="events">Sự kiện</option>
+							<option value="other">Khác</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label for="thumbnail">Ảnh thumbnail</label>
+						<input
+							type="file"
+							id="thumbnail"
+							class="form-control"
+							accept="image/*"
+						/>
+					</div>
+					<button type="submit" class="btn btn-primary btn-block">
+						<i class="fas fa-paper-plane"></i>
+						Đăng bài
+					</button>
+				</form>
+			</div>
+		</div>
+
+		<!-- Modal chi tiết bài viết -->
+		<div id="postDetailModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button
+						class="close-button"
+						onclick="closeModal('postDetailModal')"
+					>
+						&times;
+					</button>
+				</div>
+				<div id="postDetail">
+					<!-- Nội dung chi tiết bài viết sẽ được thêm vào đây -->
+				</div>
+				<div class="comments-section">
+					<h3><i class="fas fa-comments"></i> Bình luận</h3>
+					<div id="comments-container">
+						<!-- Danh sách bình luận sẽ được thêm vào đây -->
+					</div>
+					<div class="comments-section">
+						<form class="comment-form" onsubmit="return false;">
+							<div class="input-group-comment">
+								<!-- Quill editor sẽ được nhúng vào đây -->
+								<div
+									id="commentEditor"
+									style="height: 150px; width: 100%"
+								></div>
+							</div>
+							<button type="submit" class="btn btn-primary">
+								<i class="fas fa-paper-plane"></i>
+							</button>
+						</form>
+						<div class="comments-list"></div>
+					</div>
+
+					<!-- <form id="commentForm" onsubmit="addComment(event)">
+						<div class="form-group">
+							<textarea
+								id="commentContent"
+								class="form-control"
+								rows="3"
+								placeholder="Chia sẻ suy nghĩ của bạn..."
+								required
+							></textarea>
+						</div>
+						<button type="submit" class="btn btn-primary">
+							<i class="fas fa-paper-plane"></i> Gửi bình luận
+						</button>
+					</form> -->
+				</div>
+			</div>
+		</div>
+
+		<footer class="footer">
+			<div class="container">
+				<div class="footer-content">
+					<div class="footer-section">
+						<h4>Liên hệ</h4>
+						<p>
+							<i class="fas fa-envelope"></i> Email:
+							support@qlsv.edu.vn
+						</p>
+						<p><i class="fas fa-phone"></i> Hotline: 1900 xxxx</p>
+					</div>
+					<div class="footer-section">
+						<h4>Liên kết nhanh</h4>
+						<ul>
+							<li><a href="#">Hướng dẫn sử dụng</a></li>
+							<li><a href="#">Chính sách bảo mật</a></li>
+							<li><a href="#">Điều khoản sử dụng</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="footer-bottom">
+					<p>
+						&copy; 2024 Hệ thống Quản lý Sinh viên. All rights
+						reserved.
+					</p>
+				</div>
+			</div>
+		</footer>
+		<script src="js/loading.js"></script>
+		<script src="js/auth.js"></script>
+		<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+		<script src="js/quill.js"></script>
+		<script src="js/forum.js"></script>
+	</body>
+</html>

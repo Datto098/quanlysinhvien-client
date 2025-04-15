@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Quản lý sinh viên</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+		/>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<!-- Navigation -->
+		<nav class="navbar">
+			<div class="nav-brand"></div>
+			<ul class="nav-links">
+				<li><a href="index.html">Trang chủ</a></li>
+				<li><a href="forum.html">Diễn đàn</a></li>
+				<li id="adminLink" style="display: none">
+					<a href="management.html" class="active"
+						>Quản lý sinh viên</a
+					>
+				</li>
+				<li id="adminLink" style="display: none">
+					<a href="forum_management.html">Quản lý bài đằng</a>
+				</li>
+				<li id="profileLink" style="display: none">
+					<a href="student.html"
+						><i class="fas fa-user-circle"></i> Thông tin cá nhân</a
+					>
+				</li>
+				<li id="loginLink"><a href="login.html">Đăng nhập</a></li>
+				<li id="registerLink"><a href="register.html">Đăng ký</a></li>
+				<li id="logoutLink" style="display: none">
+					<a href="#" onclick="logout()">Đăng xuất</a>
+				</li>
+			</ul>
+			<button class="nav-toggle">
+				<i class="fas fa-bars"></i>
+			</button>
+		</nav>
+
+		<!-- Main Content -->
+		<div class="management-container">
+			<div class="management-header">
+				<h1 class="management-title">Quản lý sinh viên</h1>
+				<div class="management-actions">
+					<button
+						class="btn btn-primary"
+						onclick="showAddStudentModal()"
+					>
+						<i class="fas fa-user-plus"></i>
+						Thêm sinh viên
+					</button>
+					<div class="search-box">
+						<i class="fas fa-search"></i>
+						<input
+							type="text"
+							id="searchStudent"
+							placeholder="Tìm kiếm sinh viên..."
+							oninput="filterStudents()"
+						/>
+					</div>
+					<div class="sort-box">
+						<select id="sortStudents" onchange="sortStudents()">
+							<option value="">Sắp xếp theo</option>
+							<option value="name">Tên</option>
+							<option value="id">Mã sinh viên</option>
+							<option value="role">Vai trò</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<table id="studentsTable" class="students-table">
+				<thead>
+					<tr>
+						<th>Mã sinh viên</th>
+						<th>Họ tên</th>
+						<th>Email</th>
+						<th>Ngày sinh</th>
+						<th>Địa chỉ</th>
+						<th>Vai trò</th>
+						<th>Thao tác</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+
+		<!-- Add Student Modal -->
+		<div id="addStudentModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title">Thêm sinh viên mới</h2>
+					<button
+						class="close-button"
+						onclick="closeModal('addStudentModal')"
+					>
+						&times;
+					</button>
+				</div>
+				<form id="addStudentForm" onsubmit="addStudent(event)">
+					<div class="form-group">
+						<label for="addFullname">Họ tên</label>
+						<div class="input-group">
+							<i class="fas fa-user"></i>
+							<input
+								type="text"
+								id="addFullname"
+								class="form-control"
+								placeholder="Họ tên"
+								required
+							/>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="addEmail">Email</label>
+						<div class="input-group">
+							<i class="fas fa-envelope"></i>
+							<input
+								type="email"
+								id="addEmail"
+								class="form-control"
+								placeholder="Email"
+								required
+							/>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="addBirthDate">Ngày sinh</label>
+						<div class="input-group">
+							<i class="fas fa-calendar"></i>
+							<input
+								type="date"
+								id="addBirthDate"
+								class="form-control"
+							/>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="addAddress">Địa chỉ</label>
+						<div class="input-group">
+							<i class="fas fa-map-marker-alt"></i>
+							<input
+								type="text"
+								id="addAddress"
+								class="form-control"
+								placeholder="Nhập địa chỉ sinh viên"
+							/>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="addStudentId">Mã sinh viên</label>
+						<div class="input-group">
+							<i class="fas fa-id-card"></i>
+							<input
+								type="text"
+								id="addStudentId"
+								class="form-control"
+								placeholder="Mã sinh viên"
+								required
+							/>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="addRole">Vai trò</label>
+						<div class="input-group">
+							<i class="fas fa-user-tag"></i>
+							<select id="addRole" class="form-control">
+								<option value="student">Sinh viên</option>
+								<option value="admin">Quản trị viên</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-group">
+						<label for="addPassword">Mật khẩu</label>
+						<div class="input-group">
+							<i class="fas fa-lock"></i>
+							<input
+								type="password"
+								id="addPassword"
+								class="form-control"
+								required
+								placeholder="Mật khẩu"
+							/>
+							<i
+								class="fas fa-eye password-toggle"
+								onclick="togglePassword('addPassword')"
+							></i>
+						</div>
+					</div>
+
+					<button type="submit" class="btn btn-primary">
+						<i class="fas fa-user-plus"></i>
+						Thêm sinh viên
+					</button>
+				</form>
+			</div>
+		</div>
+
+		<!-- Edit Student Modal -->
+		<div id="editStudentModal" class="modal">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2 class="modal-title">Chỉnh sửa thông tin sinh viên</h2>
+					<button
+						class="close-button"
+						onclick="closeModal('editStudentModal')"
+					>
+						&times;
+					</button>
+				</div>
+				<form id="editStudentForm" onsubmit="updateStudent(event)">
+					<input type="hidden" id="estudentId" />
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="fullname">Họ tên</label>
+							<div class="input-group">
+								<i class="fas fa-user"></i>
+								<input
+									type="text"
+									id="fullname"
+									class="form-control"
+									required
+								/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="email">Email</label>
+							<div class="input-group">
+								<i class="fas fa-envelope"></i>
+								<input
+									type="email"
+									id="email"
+									class="form-control"
+									required
+								/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="birthDate">Ngày sinh</label>
+							<div class="input-group">
+								<i class="fas fa-calendar"></i>
+								<input
+									type="date"
+									id="birthDate"
+									class="form-control"
+								/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="address">Địa chỉ</label>
+							<div class="input-group">
+								<i class="fas fa-map-marker-alt"></i>
+								<input
+									type="text"
+									id="address"
+									class="form-control"
+									placeholder="Nhập địa chỉ sinh viên"
+								/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="studentId">Mã sinh viên</label>
+							<div class="input-group">
+								<i class="fas fa-id-card"></i>
+								<input
+									type="text"
+									id="studentId"
+									class="form-control"
+									required
+								/>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="role">Vai trò</label>
+							<div class="input-group">
+								<i class="fas fa-user-tag"></i>
+								<select id="role" class="form-control">
+									<option value="student">Sinh viên</option>
+									<option value="admin">Quản trị viên</option>
+								</select>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="password">Mật khẩu</label>
+							<div class="input-group">
+								<i class="fas fa-lock"></i>
+								<input
+									type="password"
+									id="password"
+									class="form-control"
+								/>
+								<i
+									class="fas fa-eye password-toggle"
+									onclick="togglePassword('password')"
+								></i>
+							</div>
+							<small class="form-text text-muted"
+								>Để trống nếu không muốn thay đổi mật
+								khẩu</small
+							>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-edit">
+						<i class="fas fa-save"></i>
+						Lưu thay đổi
+					</button>
+				</form>
+			</div>
+		</div>
+
+		<footer class="footer">
+			<div class="container">
+				<div class="footer-content">
+					<div class="footer-section">
+						<h4>Liên hệ</h4>
+						<p>
+							<i class="fas fa-envelope"></i> Email:
+							support@qlsv.edu.vn
+						</p>
+						<p><i class="fas fa-phone"></i> Hotline: 1900 xxxx</p>
+					</div>
+					<div class="footer-section">
+						<h4>Liên kết nhanh</h4>
+						<ul>
+							<li><a href="#">Hướng dẫn sử dụng</a></li>
+							<li><a href="#">Chính sách bảo mật</a></li>
+							<li><a href="#">Điều khoản sử dụng</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="footer-bottom">
+					<p>
+						&copy; 2024 Hệ thống Quản lý Sinh viên. All rights
+						reserved.
+					</p>
+				</div>
+			</div>
+		</footer>
+
+		<!-- Scripts -->
+		<script src="js/loading.js"></script>
+		<script src="js/auth.js"></script>
+		<script src="js/management.js"></script>
+	</body>
+</html>

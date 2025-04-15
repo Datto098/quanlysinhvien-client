@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Đăng nhập - Hệ thống Quản lý Sinh viên</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+		/>
+		<link rel="stylesheet" href="css/style.css" />
+	</head>
+	<body>
+		<!-- Navigation -->
+		<nav class="navbar">
+			<div class="nav-brand"></div>
+			<ul class="nav-links">
+				<li><a href="index.html">Trang chủ</a></li>
+				<li><a href="forum.html">Diễn đàn</a></li>
+				<li id="adminLink" style="display: none">
+					<a href="management.html">Quản lý sinh viên</a>
+				</li>
+				<li id="adminLink" style="display: none">
+					<a href="forum_management.html">Quản lý bài đằng</a>
+				</li>
+				<li id="loginLink">
+					<a href="login.html" class="active">Đăng nhập</a>
+				</li>
+				<li id="registerLink"><a href="register.html">Đăng ký</a></li>
+				<li id="logoutLink" style="display: none">
+					<a href="#" onclick="logout()">Đăng xuất</a>
+				</li>
+			</ul>
+			<button class="nav-toggle">
+				<i class="fas fa-bars"></i>
+			</button>
+		</nav>
+
+		<!-- Main Content -->
+		<div class="container">
+			<div class="auth-container">
+				<div class="auth-card">
+					<h2 class="auth-title">
+						<i class="fas fa-sign-in-alt"></i>
+						Đăng nhập
+					</h2>
+					<form id="loginForm" onsubmit="login(event)">
+						<div class="form-group">
+							<label for="email">Email</label>
+							<div class="input-group">
+								<i class="fas fa-envelope"></i>
+								<input
+									placeholder="Email"
+									type="email"
+									id="email"
+									class="form-control"
+									required
+								/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="password">Mật khẩu</label>
+							<div class="input-group">
+								<i class="fas fa-lock"></i>
+								<input
+									placeholder="Mật khẩu"
+									type="password"
+									id="password"
+									class="form-control"
+									required
+								/>
+								<i
+									class="fas fa-eye toggle-password"
+									onclick="togglePassword('password')"
+								></i>
+							</div>
+						</div>
+						<div class="form-group remember-me">
+							<input
+								type="checkbox"
+								id="remember"
+								name="remember"
+							/>
+							<label
+								for="remember"
+								style="margin-bottom: 0; padding-bottom: 0"
+								>Ghi nhớ đăng nhập</label
+							>
+						</div>
+						<button type="submit" class="btn btn-primary btn-block">
+							<i class="fas fa-sign-in-alt"></i>
+							Đăng nhập
+						</button>
+					</form>
+					<div class="auth-links">
+						<p>
+							Chưa có tài khoản?
+							<a href="register.html">Đăng ký ngay</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<footer class="footer">
+			<div class="container">
+				<p>
+					&copy; 2024 Hệ thống Quản lý Sinh viên. All rights reserved.
+				</p>
+			</div>
+		</footer>
+
+		<script src="js/auth.js"></script>
+	</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Đăng ký - Hệ thống Quản lý Sinh viên</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+        <link rel="stylesheet" href="css/style.css" />
+    </head>
+    <body>
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand"></div>
+            <ul class="nav-links">
+                <li><a href="index.html">Trang chủ</a></li>
+                <li><a href="forum.html">Diễn đàn</a></li>
+                <li id="adminLink" style="display: none">
+                    <a href="management.html">Quản lý sinh viên</a>
+                </li>
+                <li id="adminLink" style="display: none">
+                  <a href="forum_management.html">Quản lý bài đằng</a>
+               </li>
+                <li id="loginLink"><a href="login.html">Đăng nhập</a></li>
+                <li id="registerLink">
+                    <a href="register.html" class="active">Đăng ký</a>
+                </li>
+                <li id="logoutLink" style="display: none">
+                    <a href="#" onclick="logout()">Đăng xuất</a>
+                </li>
+            </ul>
+            <button class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="container">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2 class="auth-title">
+                        <i class="fas fa-user-plus"></i>
+                        Đăng ký tài khoản
+                    </h2>
+                    <form id="registerForm" ">
+                        <div class="form-group">
+                            <label for="fullname">Họ và tên</label>
+                            <div class="input-group">
+                                <i class="fas fa-user"></i>
+                                <input
+                                    type="text"
+                                    id="fullname"
+                                    class="form-control"
+                                    placeholder="Họ và tên"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <div class="input-group">
+                                <i class="fas fa-envelope"></i>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    class="form-control"
+                                    placeholder="Email"
+                                    required
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                           <label for="email">Mã sinh viên</label>
+                           <div class="input-group">
+                               <i class="fas fa-user-graduate"></i>
+                               <input
+                                   type="text"
+                                   id="studentId"
+                                   class="form-control"
+                                   placeholder="Mã sinh viên"
+                                   required
+                               />
+                           </div>
+                       </div>
+                        <div class="form-group">
+                            <label for="password">Mật khẩu</label>
+                            <div class="input-group">
+                                <i class="fas fa-lock"></i>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    placeholder="Mật khẩu"
+                                    class="form-control"
+                                    required
+                                />
+                                <i
+                                    class="fas fa-eye toggle-password"
+                                    onclick="togglePassword('password')"
+                                ></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword"
+                                >Xác nhận mật khẩu</label
+                            >
+                            <div class="input-group">
+                                <i class="fas fa-lock"></i>
+                                <input
+                                    type="password"
+                                    id="confirmPassword"
+                                    class="form-control"
+                                    placeholder="Xác nhận mật khẩu"
+                                    required
+                                />
+                                <i
+                                    class="fas fa-eye toggle-password"
+                                    onclick="togglePassword('confirmPassword')"
+                                ></i>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div
+                                class="remember-me"
+                                style="display: flex; align-items: center"
+                            >
+                                <input type="checkbox" name="terms" required />
+                                <label
+                                    for="terms"
+                                    style="margin-bottom: 0; padding-bottom: 0"
+                                    >Tôi đồng ý với điều khoản sử dụng</label
+                                >
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">
+                            <i class="fas fa-user-plus"></i>
+                            Đăng ký
+                        </button>
+                    </form>
+                    <div class="auth-links">
+                        <p>
+                            Đã có tài khoản? <a href="login.html">Đăng nhập</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="container">
+                <p>
+                    &copy; 2024 Hệ thống Quản lý Sinh viên. All rights reserved.
+                </p>
+            </div>
+        </footer>
+
+        <!-- <script src="js/loading.js"></script> -->
+        <script src="js/auth.js"></script>
+        <!-- <script src="js/management.js"></script> -->
+    </body>
+</html>
