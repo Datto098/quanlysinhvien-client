@@ -110,7 +110,7 @@ function getAuthHeader(contentType = 'application/json') {
 function logout() {
 	localStorage.removeItem('token');
 	localStorage.removeItem('user');
-	window.location.href = '/login.html';
+	window.location.href = CLIENT_URL + '/login.html';
 }
 
 // Xử lý form đăng nhập và đăng ký
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
 				localStorage.setItem('user', JSON.stringify(data.student));
 
 				// Chuyển hướng về trang chủ
-				window.location.href = '/index.html';
+				window.location.href = CLIENT_URL;
 			} catch (error) {
 				showErrorInput('email', error.message);
 			}
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 				// Chuyển về trang đăng nhập sau 2 giây
 				setTimeout(() => {
-					window.location.href = '/login.html';
+					window.location.href = CLIENT_URL + '/login.html';
 				}, 2000);
 			} catch (error) {
 				showErrorInput('email', error.message);
